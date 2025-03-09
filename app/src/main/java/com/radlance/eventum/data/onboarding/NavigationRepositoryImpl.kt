@@ -1,0 +1,26 @@
+package com.radlance.eventum.data.onboarding
+
+import com.radlance.eventum.data.common.DataStoreRepository
+import com.radlance.eventum.domain.onboarding.NavigationRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class NavigationRepositoryImpl @Inject constructor(
+    private val dataStoreRepository: DataStoreRepository
+) : NavigationRepository {
+    override suspend fun setOnBoardingViewed(viewed: Boolean) {
+        dataStoreRepository.setOnBoardingViewed(viewed)
+    }
+
+    override fun getOnBoardingViewingStatus(): Flow<Boolean> {
+        return dataStoreRepository.getViewingStatus()
+    }
+
+    override suspend fun setUserLoggedIn(loggedIn: Boolean) {
+        return dataStoreRepository.setLoggedInStatus(loggedIn)
+    }
+
+    override fun getLoggedInStatus(): Flow<Boolean> {
+        return dataStoreRepository.getLoggedInStatus()
+    }
+}
