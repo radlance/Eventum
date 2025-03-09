@@ -28,11 +28,11 @@ import com.radlance.eventum.ui.theme.ralewayFamily
 fun NavigationButton(
     @StringRes stringResId: Int,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     buttonColors: ButtonColors = ButtonDefaults.buttonColors().copy(
         containerColor = redPrimaryColor,
         contentColor = Color.White
     ),
-    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     icon: ImageVector? = null
 ) {

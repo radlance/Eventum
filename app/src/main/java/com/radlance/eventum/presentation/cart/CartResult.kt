@@ -38,7 +38,6 @@ import com.radlance.eventum.ui.theme.poppinsFamily
 import com.radlance.eventum.ui.theme.ralewayFamily
 import com.radlance.eventum.ui.theme.secondaryTextColor
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 @Composable
 fun CartResult(

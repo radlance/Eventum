@@ -32,6 +32,7 @@ import coil3.request.crossfade
 import com.radlance.eventum.R
 import com.radlance.eventum.ui.theme.EventumTheme
 import com.radlance.eventum.ui.theme.ralewayFamily
+import androidx.core.net.toUri
 
 @Composable
 fun ProfilePictureSection(
@@ -43,7 +44,7 @@ fun ProfilePictureSection(
     var imageState by rememberSaveable { mutableStateOf<Uri>(Uri.EMPTY) }
 
     LaunchedEffect(imageUrl) {
-        imageState = Uri.parse(imageUrl)
+        imageState = imageUrl.toUri()
     }
 
     Column(

@@ -60,8 +60,8 @@ fun VerificationScreen(
     onBackPressed: () -> Unit,
     onSuccessPasswordUpdating: () -> Unit,
     email: String,
-    viewModel: ForgotPasswordViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ForgotPasswordViewModel = hiltViewModel()
 ) {
     val focusRequesters = rememberSaveable { List(6) { FocusRequester() } }
     val coroutineScope = rememberCoroutineScope()

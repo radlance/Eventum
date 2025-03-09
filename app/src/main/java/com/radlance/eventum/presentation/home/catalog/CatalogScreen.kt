@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.eventum.R
 import com.radlance.eventum.presentation.common.EventViewModel
-import com.radlance.eventum.presentation.home.common.CategoriesRow
 import com.radlance.eventum.presentation.component.EventGrid
+import com.radlance.eventum.presentation.home.common.CategoriesRow
 import com.radlance.eventum.presentation.home.common.ChangeEventStatus
 import com.radlance.eventum.ui.theme.EventumTheme
 
