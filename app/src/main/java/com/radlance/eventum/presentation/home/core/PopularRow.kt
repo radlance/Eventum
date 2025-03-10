@@ -80,12 +80,14 @@ fun PopularRow(
                 }
 
                 Spacer(Modifier.width(19.dp))
-                EventCard(
-                    onLikeClick = { onLikeClick(events[1].id) },
-                    event = events.first { it.id == 5 },
-                    onCardClick = onCardClick,
-                    modifier = modifier.weight(1f)
-                )
+                with(events.first { it.id == 5 }) {
+                    EventCard(
+                        onLikeClick = { onLikeClick(id) },
+                        event = this,
+                        onCardClick = onCardClick,
+                        modifier = modifier.weight(1f)
+                    )
+                }
             }
         }
     }

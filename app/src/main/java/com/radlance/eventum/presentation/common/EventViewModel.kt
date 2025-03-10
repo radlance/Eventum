@@ -1,6 +1,5 @@
 package com.radlance.eventum.presentation.common
 
-import android.util.Log
 import com.radlance.eventum.domain.event.CatalogFetchContent
 import com.radlance.eventum.domain.event.Event
 import com.radlance.eventum.domain.event.EventCart
@@ -127,7 +126,6 @@ class EventViewModel @Inject constructor(
         recover: Boolean = false
     ) {
         updateLocalState(_cartContent) { currentState ->
-            Log.d("EventViewModel", event.toString())
             changeInCartByResult(currentState, eventPriceId, event, selectedType, recover)
         }
     }
@@ -204,6 +202,7 @@ class EventViewModel @Inject constructor(
                 event
             }
         }
+
         val updatedContent = currentState.data.copy(events = updatedEvents)
         _catalogContent.value = FetchResultUiState.Success(updatedContent)
     }

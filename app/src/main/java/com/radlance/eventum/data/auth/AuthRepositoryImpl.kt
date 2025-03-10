@@ -1,6 +1,5 @@
 package com.radlance.eventum.data.auth
 
-import android.util.Log
 import com.radlance.eventum.domain.authorization.AuthRepository
 import com.radlance.eventum.domain.authorization.AuthResult
 import com.radlance.eventum.domain.user.User
@@ -32,10 +31,8 @@ class AuthRepositoryImpl @Inject constructor(
             }
             signIn(user)
         } catch (e: AuthRestException) {
-            Log.d("AuthRepositoryImpl", e.message!!)
             AuthResult.Error(statusCode = 422)
         } catch (e: Exception) {
-            Log.d("AuthRepositoryImpl", e.message!!)
             AuthResult.Error(noConnection = e is HttpRequestException)
         }
     }
@@ -48,10 +45,8 @@ class AuthRepositoryImpl @Inject constructor(
             }
             AuthResult.Success
         } catch (e: AuthRestException) {
-            Log.d("AuthRepositoryImpl", e.message!!)
             AuthResult.Error(statusCode = 400)
         } catch (e: Exception) {
-            Log.d("AuthRepositoryImpl", e.message!!)
             AuthResult.Error(noConnection = e is HttpRequestException)
         }
     }

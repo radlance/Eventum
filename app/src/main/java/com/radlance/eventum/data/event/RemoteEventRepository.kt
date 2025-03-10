@@ -1,6 +1,5 @@
 package com.radlance.eventum.data.event
 
-import android.util.Log
 import com.radlance.eventum.data.database.local.EventumDao
 import com.radlance.eventum.data.database.remote.RemoteMapper
 import com.radlance.eventum.data.database.remote.entity.CartEntity
@@ -92,7 +91,6 @@ class RemoteEventRepository @Inject constructor(
                 )
             )
         } catch (e: Exception) {
-            Log.d("RemoteEventRepository", e.message!!)
             FetchResult.Error(null)
         }
     }
