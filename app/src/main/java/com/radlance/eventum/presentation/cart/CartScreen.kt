@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -86,117 +87,119 @@ fun CartScreen(
         )
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
-        CartHeader(onBackPressed = onBackPressed)
-        Spacer(Modifier.height(16.dp))
+    Scaffold { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(bottom = paddingValues.calculateBottomPadding())
+                .background(MaterialTheme.colorScheme.surface),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
+            CartHeader(onBackPressed = onBackPressed)
+            Spacer(Modifier.height(16.dp))
 
-        removeResult.Show(
-            onSuccess = {},
-            onError = { eventId ->
-                ChangeEventStatus(
-                    eventId = eventId,
-                    onStatusChanged = {
-                        eventViewModel.deleteCartItemFromCurrentState(
-                            eventPriceId = it,
-                            recover = true
-                        )
-                    }
-                )
-            },
-            onLoading = { eventId ->
-                ChangeEventStatus(
-                    eventId = eventId,
-                    onStatusChanged = eventViewModel::deleteCartItemFromCurrentState
-                )
-            },
-            onUnauthorized = {}
-        )
-
-        quantityResult.Show(
-            onSuccess = {},
-            onError = { eventId ->
-                ChangeEventStatus(eventId) {
-                    eventViewModel.updateCurrentQuantity(it, !incrementCurrent)
-                }
-            },
-            onLoading = { eventId ->
-                ChangeEventStatus(eventId) {
-                    eventViewModel.updateCurrentQuantity(it, incrementCurrent)
-                }
-            },
-            onUnauthorized = {}
-        )
-
-        cartContent.Show(
-            onSuccess = { eventsInCart ->
-                val filteredEvents = eventsInCart.filter { it.quantity != 0 }
-                if (filteredEvents.isEmpty()) {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = stringResource(R.string.cart_is_empty),
-                            fontSize = 16.sp,
-                            fontFamily = ralewayFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            lineHeight = 20.sp,
-                            modifier = Modifier.offset(y = (-55).dp)
-                        )
-                    }
-                } else {
-                    CartEventColumn(
-                        cartItems = filteredEvents,
-                        onChangeQuantityClick = { eventPriceId, quantity, increment ->
-                            eventViewModel.updateEventQuantity(eventPriceId, quantity)
-                            incrementCurrent = increment
-                        },
-
-                        onRemoveEvent = eventViewModel::removeEventFromCart,
-
-                        modifier = Modifier.weight(4.7f)
+            removeResult.Show(
+                onSuccess = {},
+                onError = { eventId ->
+                    ChangeEventStatus(
+                        eventId = eventId,
+                        onStatusChanged = {
+                            eventViewModel.deleteCartItemFromCurrentState(
+                                eventPriceId = it,
+                                recover = true
+                            )
+                        }
                     )
-                    Box(
-                        modifier = Modifier.weight(2f)
-                    ) {
-                        CartResult(
-                            eventsPrice = eventsInCart.sumOf { it.price * it.quantity },
-                            buttonStringResId = R.string.place_order,
-                            onButtonClick = {
-                                observeUserData = true
-                            }
-                        )
+                },
+                onLoading = { eventId ->
+                    ChangeEventStatus(
+                        eventId = eventId,
+                        onStatusChanged = eventViewModel::deleteCartItemFromCurrentState
+                    )
+                },
+                onUnauthorized = {}
+            )
+
+            quantityResult.Show(
+                onSuccess = {},
+                onError = { eventId ->
+                    ChangeEventStatus(eventId) {
+                        eventViewModel.updateCurrentQuantity(it, !incrementCurrent)
                     }
-                }
+                },
+                onLoading = { eventId ->
+                    ChangeEventStatus(eventId) {
+                        eventViewModel.updateCurrentQuantity(it, incrementCurrent)
+                    }
+                },
+                onUnauthorized = {}
+            )
 
+            cartContent.Show(
+                onSuccess = { eventsInCart ->
+                    val filteredEvents = eventsInCart.filter { it.quantity != 0 }
+                    if (filteredEvents.isEmpty()) {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(R.string.cart_is_empty),
+                                fontSize = 16.sp,
+                                fontFamily = ralewayFamily,
+                                fontWeight = FontWeight.SemiBold,
+                                lineHeight = 20.sp,
+                                modifier = Modifier.offset(y = (-55).dp)
+                            )
+                        }
+                    } else {
+                        CartEventColumn(
+                            cartItems = filteredEvents,
+                            onChangeQuantityClick = { eventPriceId, quantity, increment ->
+                                eventViewModel.updateEventQuantity(eventPriceId, quantity)
+                                incrementCurrent = increment
+                            },
 
-            },
-            onError = {
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .offset(y = (-55).dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = stringResource(R.string.load_error))
-                        Spacer(Modifier.height(12.dp))
-                        Button(onClick = eventViewModel::fetchCartContent) {
-                            Text(stringResource(R.string.retry), color = Color.White)
+                            onRemoveEvent = eventViewModel::removeEventFromCart,
+
+                            modifier = Modifier.weight(4.7f)
+                        )
+                        Box(
+                            modifier = Modifier.weight(2f)
+                        ) {
+                            CartResult(
+                                eventsPrice = eventsInCart.sumOf { it.price * it.quantity },
+                                buttonStringResId = R.string.place_order,
+                                onButtonClick = {
+                                    observeUserData = true
+                                }
+                            )
                         }
                     }
-                }
-            },
-            onLoading = {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
-                }
-            },
-            onUnauthorized = {}
-        )
+
+                },
+                onError = {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .offset(y = (-55).dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = stringResource(R.string.load_error))
+                            Spacer(Modifier.height(12.dp))
+                            Button(onClick = eventViewModel::fetchCartContent) {
+                                Text(stringResource(R.string.retry), color = Color.White)
+                            }
+                        }
+                    }
+                },
+                onLoading = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                    }
+                },
+                onUnauthorized = {}
+            )
+        }
     }
 }
 

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -86,80 +87,83 @@ fun OrderScreen(
         }
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    Scaffold { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(bottom = paddingValues.calculateBottomPadding())
+                .background(MaterialTheme.colorScheme.surface),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
 
-        Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
-        OrderHeader(onBackPressed = onBackPressed)
-        Spacer(Modifier.height(46.dp))
+            Spacer(Modifier.height(dimensionResource(R.dimen.main_top_padding)))
+            OrderHeader(onBackPressed = onBackPressed)
+            Spacer(Modifier.height(46.dp))
 
-        cartContent.Show(
-            onSuccess = { cartList ->
+            cartContent.Show(
+                onSuccess = { cartList ->
 
-                Column(modifier = Modifier.weight(4.5f)) {
-                    OrderCard(
-                        email = currentUser.email,
-                        onMapClick = onMapClick,
-                        modifier = Modifier.padding(horizontal = 14.dp)
-                    )
-                }
-
-                Box(
-                    modifier = Modifier.weight(2f)
-                ) {
-                    if (resultSum == 0.0) {
-                        resultSum = cartList.sumOf { it.price * it.quantity }
+                    Column(modifier = Modifier.weight(4.5f)) {
+                        OrderCard(
+                            email = currentUser.email,
+                            onMapClick = onMapClick,
+                            modifier = Modifier.padding(horizontal = 14.dp)
+                        )
                     }
-                    CartResult(
-                        modifier = Modifier.wrapContentSize(),
-                        eventsPrice = resultSum,
-                        buttonStringResId = R.string.confirm,
-                        buttonEnabled = placeOrderButtonEnabled,
-                        onButtonClick = { eventViewModel.placeOrder(cartList) }
-                    )
-                }
-            },
-            onError = {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = stringResource(R.string.load_error))
-                        Spacer(Modifier.height(12.dp))
-                        Button(onClick = eventViewModel::fetchContent) {
-                            Text(stringResource(R.string.retry), color = Color.White)
+
+                    Box(
+                        modifier = Modifier.weight(2f)
+                    ) {
+                        if (resultSum == 0.0) {
+                            resultSum = cartList.sumOf { it.price * it.quantity }
+                        }
+                        CartResult(
+                            modifier = Modifier.wrapContentSize(),
+                            eventsPrice = resultSum,
+                            buttonStringResId = R.string.confirm,
+                            buttonEnabled = placeOrderButtonEnabled,
+                            onButtonClick = { eventViewModel.placeOrder(cartList) }
+                        )
+                    }
+                },
+                onError = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = stringResource(R.string.load_error))
+                            Spacer(Modifier.height(12.dp))
+                            Button(onClick = eventViewModel::fetchContent) {
+                                Text(stringResource(R.string.retry), color = Color.White)
+                            }
                         }
                     }
-                }
-            },
-            onLoading = {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
-                }
-            },
-            onUnauthorized = {}
-        )
+                },
+                onLoading = {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(modifier = Modifier.offset(y = (-55).dp))
+                    }
+                },
+                onUnauthorized = {}
+            )
 
-        placeOrderResult.Show(
-            onSuccess = {
-                LaunchedEffect(Unit) {
-                    showSuccessOrderPlaceDialog = true
-                    eventViewModel.updateStateAfterPlaceOrder(it)
-                }
-            },
-            onLoading = { placeOrderButtonEnabled = false },
-            onError = {
-                placeOrderButtonEnabled = true
-                Toast.makeText(
-                    context,
-                    stringResource(R.string.place_order_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-            },
-            onUnauthorized = {}
-        )
+            placeOrderResult.Show(
+                onSuccess = {
+                    LaunchedEffect(Unit) {
+                        showSuccessOrderPlaceDialog = true
+                        eventViewModel.updateStateAfterPlaceOrder(it)
+                    }
+                },
+                onLoading = { placeOrderButtonEnabled = false },
+                onError = {
+                    placeOrderButtonEnabled = true
+                    Toast.makeText(
+                        context,
+                        stringResource(R.string.place_order_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onUnauthorized = {}
+            )
+        }
     }
 }
 
