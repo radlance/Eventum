@@ -203,13 +203,13 @@ fun SignInScreen(
                     )
                 }
 
-//                Spacer(Modifier.height(24.dp))
-//                Text(
-//                    text = stringResource(R.string.skip_authorization),
-//                    fontSize = 16.sp,
-//                    color = secondaryTextColor,
-//                    modifier = Modifier.clickable { onSuccessSignIn() }
-//                )
+                Spacer(Modifier.height(24.dp))
+                Text(
+                    text = stringResource(R.string.skip_authorization),
+                    fontSize = 16.sp,
+                    color = secondaryTextColor,
+                    modifier = Modifier.clickable { onSuccessSignIn() }
+                )
             }
         }
     }

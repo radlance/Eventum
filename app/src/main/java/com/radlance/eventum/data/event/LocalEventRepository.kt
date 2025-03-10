@@ -1,5 +1,6 @@
 package com.radlance.eventum.data.event
 
+import android.util.Log
 import com.radlance.eventum.data.database.local.LocalMapper
 import com.radlance.eventum.data.database.local.EventumDao
 import com.radlance.eventum.domain.history.HistoryEvent
@@ -15,10 +16,11 @@ class LocalEventRepository @Inject constructor(
     override suspend fun fetchCatalogContent(): FetchResult<CatalogFetchContent> {
         val catalogFetchContent = CatalogFetchContent(
             categories = dao.getCategories().map { categoryEntity -> categoryEntity.toCategory() },
-            events = dao.getEvents().map {
+            events = dao.getFullEventInfo().map {
                 eventEntity -> eventEntity.toEvent()
             }
         )
+        Log.d("LocalEventRepository", "catalog fetch content: ${catalogFetchContent.events}")
         return FetchResult.Success(catalogFetchContent)
     }
 
@@ -28,7 +30,6 @@ class LocalEventRepository @Inject constructor(
     }
 
     override suspend fun fetchCartContent(): FetchResult<List<EventCart>> {
-        //TODO
         return FetchResult.Success(emptyList())
     }
 

@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.radlance.eventum.data.database.local.entity.LocalCategoryEntity
 import com.radlance.eventum.data.database.local.entity.LocalNotificationEntity
 import com.radlance.eventum.data.database.local.entity.LocalEventEntity
+import com.radlance.eventum.data.database.local.entity.LocalEventPriceEntity
 import com.radlance.eventum.data.database.local.entity.SearchHistoryQueryEntity
 
 @Database(
@@ -15,7 +16,8 @@ import com.radlance.eventum.data.database.local.entity.SearchHistoryQueryEntity
         SearchHistoryQueryEntity::class,
         LocalCategoryEntity::class,
         LocalEventEntity::class,
-        LocalNotificationEntity::class
+        LocalNotificationEntity::class,
+        LocalEventPriceEntity::class
     ],
     version = 1,
     exportSchema = false
