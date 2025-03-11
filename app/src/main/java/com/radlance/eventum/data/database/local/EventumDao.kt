@@ -39,7 +39,7 @@ interface EventumDao {
     @Query("UPDATE event SET is_favorite = NOT is_favorite WHERE id = :eventId")
     suspend fun changeFavoriteStatus(eventId: Int)
 
-    @Query("UPDATE event SET is_favorite = NOT is_favorite WHERE id = :eventPriceId")
+    @Query("UPDATE event_price SET quantity_in_cart = quantity_in_cart + 1 WHERE id = :eventPriceId")
     suspend fun addEventToCart(eventPriceId: Int)
 
     @Query("SELECT * FROM event")
@@ -48,8 +48,8 @@ interface EventumDao {
     @Query("SELECT * FROM event_price WHERE event_id = :eventId")
     suspend fun getEventPrices(eventId: Int): List<LocalEventPriceEntity>
 
-    @Query("UPDATE event SET is_favorite = NOT is_favorite WHERE id = :eventId + :quantity")
-    suspend fun updateEventQuantity(eventId: Int, quantity: Int)
+    @Query("UPDATE event_price SET quantity_in_cart = :quantity WHERE id = :eventPriceId")
+    suspend fun updateEventQuantity(eventPriceId: Int, quantity: Int)
 
     @Query("DELETE FROM event WHERE id = :eventId")
     suspend fun removeEventFromCart(eventId: Int)
