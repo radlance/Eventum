@@ -54,8 +54,8 @@ interface EventumDao {
     @Query("UPDATE event_price SET quantity_in_cart = :quantity WHERE id = :eventPriceId")
     suspend fun updateEventQuantity(eventPriceId: Int, quantity: Int)
 
-    @Query("DELETE FROM event WHERE id = :eventId")
-    suspend fun removeEventFromCart(eventId: Int)
+    @Query("UPDATE event_price SET quantity_in_cart = 0 WHERE id = :eventPriceId")
+    suspend fun removeEventFromCart(eventPriceId: Int)
 
     @Query("DELETE FROM event")
     suspend fun clearCart()
