@@ -45,6 +45,9 @@ interface EventumDao {
     @Query("SELECT * FROM event")
     suspend fun getEvents(): List<LocalEventEntity>
 
+    @Query("SELECT * FROM event_price WHERE quantity_in_cart != 0")
+    suspend fun getCartItems(): List<LocalEventPriceEntity>
+
     @Query("SELECT * FROM event_price")
     suspend fun getEventPrices(): List<LocalEventPriceEntity>
 
@@ -57,7 +60,7 @@ interface EventumDao {
     @Query("UPDATE event_price SET quantity_in_cart = 0 WHERE id = :eventPriceId")
     suspend fun removeEventFromCart(eventPriceId: Int)
 
-    @Query("DELETE FROM event")
+    @Query("UPDATE event_price SET quantity_in_cart = 0")
     suspend fun clearCart()
 
     @Query("SELECT * FROM notification")
