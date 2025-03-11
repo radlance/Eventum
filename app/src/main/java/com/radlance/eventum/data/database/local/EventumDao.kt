@@ -3,10 +3,10 @@ package com.radlance.eventum.data.database.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.Update
-import com.radlance.eventum.data.database.local.entity.EventWithPrices
 import com.radlance.eventum.data.database.local.entity.LocalCategoryEntity
+import com.radlance.eventum.data.database.local.entity.LocalEventEntity
+import com.radlance.eventum.data.database.local.entity.LocalEventPriceEntity
 import com.radlance.eventum.data.database.local.entity.LocalNotificationEntity
 import com.radlance.eventum.data.database.local.entity.SearchHistoryQueryEntity
 import kotlinx.coroutines.flow.Flow
@@ -42,10 +42,11 @@ interface EventumDao {
     @Query("UPDATE event SET is_favorite = NOT is_favorite WHERE id = :eventPriceId")
     suspend fun addEventToCart(eventPriceId: Int)
 
-    //FIXME
-    @Transaction
     @Query("SELECT * FROM event")
-    suspend fun getFullEventInfo(): List<EventWithPrices>
+    suspend fun getEvents(): List<LocalEventEntity>
+
+    @Query("SELECT * FROM event_price WHERE event_id = :eventId")
+    suspend fun getEventPrices(eventId: Int): List<LocalEventPriceEntity>
 
     @Query("UPDATE event SET is_favorite = NOT is_favorite WHERE id = :eventId + :quantity")
     suspend fun updateEventQuantity(eventId: Int, quantity: Int)

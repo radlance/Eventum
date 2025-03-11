@@ -1,11 +1,13 @@
 package com.radlance.eventum.data.database.local
 
-import com.radlance.eventum.data.database.local.entity.EventWithPrices
 import com.radlance.eventum.data.database.local.entity.LocalCategoryEntity
+import com.radlance.eventum.data.database.local.entity.LocalEventEntity
+import com.radlance.eventum.data.database.local.entity.LocalEventPriceEntity
 import com.radlance.eventum.data.database.local.entity.LocalNotificationEntity
 import com.radlance.eventum.data.database.local.entity.SearchHistoryQueryEntity
 import com.radlance.eventum.domain.event.Category
 import com.radlance.eventum.domain.event.Event
+import com.radlance.eventum.domain.event.PriceWithCategory
 import com.radlance.eventum.domain.notification.Notification
 import com.radlance.eventum.domain.search.SearchHistoryQuery
 
@@ -22,18 +24,24 @@ abstract class LocalMapper {
         return Category(title = title, id = id)
     }
 
-    //FIXME
-    protected fun EventWithPrices.toEvent(): Event {
+    protected fun LocalEventEntity.toEvent(
+        pricesWithCategories: List<PriceWithCategory>
+    ): Event {
         return Event(
-            title = event.title,
-            description = event.description,
-            imageUrl = event.imageUrl,
-            categoryId = event.categoryId,
-            isFavorite = event.isFavorite,
+            title = title,
+            description = description,
+            imageUrl = imageUrl,
+            categoryId = categoryId,
+            isFavorite = isFavorite,
             quantityInCart = 0,
-            pricesWithCategories = emptyList(),
-            spendTime = ""
+            pricesWithCategories = pricesWithCategories,
+            spendTime = spendTime,
+            id = id
         )
+    }
+
+    protected fun LocalEventPriceEntity.toPriceWithCategory(): PriceWithCategory {
+        return PriceWithCategory(id, priceType, price.toDouble())
     }
 
     protected fun LocalNotificationEntity.toNotification(): Notification {
