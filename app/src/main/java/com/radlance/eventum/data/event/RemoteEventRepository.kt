@@ -150,7 +150,7 @@ class RemoteEventRepository @Inject constructor(
                 .decodeList<RemoteEventEntity>()
                 .associateBy { it.id }
 
-            val eventCarts = cartItems.mapNotNull { cart ->
+            val eventsCart = cartItems.mapNotNull { cart ->
                 val eventPrice = eventPrices[cart.eventPriceId] ?: return@mapNotNull null
                 val event = events[eventPrice.eventId] ?: return@mapNotNull null
 
@@ -173,7 +173,7 @@ class RemoteEventRepository @Inject constructor(
                 )
             }
 
-            FetchResult.Success(eventCarts)
+            FetchResult.Success(eventsCart)
         } catch (e: Exception) {
             FetchResult.Error(null)
         }

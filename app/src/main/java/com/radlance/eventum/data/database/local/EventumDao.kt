@@ -45,8 +45,11 @@ interface EventumDao {
     @Query("SELECT * FROM event")
     suspend fun getEvents(): List<LocalEventEntity>
 
+    @Query("SELECT * FROM event_price")
+    suspend fun getEventPrices(): List<LocalEventPriceEntity>
+
     @Query("SELECT * FROM event_price WHERE event_id = :eventId")
-    suspend fun getEventPrices(eventId: Int): List<LocalEventPriceEntity>
+    suspend fun getEventPricesById(eventId: Int): List<LocalEventPriceEntity>
 
     @Query("UPDATE event_price SET quantity_in_cart = :quantity WHERE id = :eventPriceId")
     suspend fun updateEventQuantity(eventPriceId: Int, quantity: Int)
