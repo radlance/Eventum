@@ -1,5 +1,6 @@
 package com.radlance.eventum.data.database.remote
 
+import com.radlance.eventum.data.database.remote.entity.EventPriceEntity
 import com.radlance.eventum.data.database.remote.entity.HistoryEntity
 import com.radlance.eventum.data.database.remote.entity.NotificationEntity
 import com.radlance.eventum.data.database.remote.entity.RemoteCategoryEntity
@@ -35,6 +36,10 @@ abstract class RemoteMapper {
             pricesWithCategories = pricesWithCategories,
             spendTime = spendTime
         )
+    }
+
+    protected fun EventPriceEntity.toPriceWithCategory(): PriceWithCategory {
+        return PriceWithCategory(id, priceType, price)
     }
 
     protected fun EventCart.toHistoryEntity(userId: String): HistoryEntity {

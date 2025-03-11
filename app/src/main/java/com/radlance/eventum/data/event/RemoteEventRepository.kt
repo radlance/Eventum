@@ -12,7 +12,6 @@ import com.radlance.eventum.domain.event.CatalogFetchContent
 import com.radlance.eventum.domain.event.Event
 import com.radlance.eventum.domain.event.EventCart
 import com.radlance.eventum.domain.event.EventRepository
-import com.radlance.eventum.domain.event.PriceWithCategory
 import com.radlance.eventum.domain.history.HistoryEvent
 import com.radlance.eventum.domain.remote.FetchResult
 import io.github.jan.supabase.SupabaseClient
@@ -31,7 +30,7 @@ class RemoteEventRepository @Inject constructor(
             supabaseClient.auth.currentSessionOrNull()?.user ?: return FetchResult.Error(null)
 
         return try {
-            val localCartEntities = dao.getCartEvents()
+            val localCartEntities = dao.getCartItems()
 
             if (localCartEntities.isNotEmpty()) {
                 val userEvents = supabaseClient.from("cart").select {
@@ -39,26 +38,16 @@ class RemoteEventRepository @Inject constructor(
                 }.decodeList<CartEntity>()
 
                 if (userEvents.isEmpty()) {
-                    val eventTitles = localCartEntities.map { it.title }
 
-                    val events = supabaseClient.from("event").select {
-                        filter { RemoteEventEntity::title isIn eventTitles }
-                    }.decodeList<RemoteEventEntity>()
 
-                    val cartEntities = localCartEntities.mapNotNull { local ->
-                        events.find { it.title == local.title }?.let { event ->
-                            CartEntity(
-                                eventPriceId = event.id,
-                                quantity = local.quantityInCart,
-                                userId = user.id
-                            )
-                        }
-                    }
-
-                    if (cartEntities.isNotEmpty()) {
-                        supabaseClient.from("cart").insert(cartEntities)
-                        dao.clearCart()
-                    }
+                    supabaseClient.from("cart").insert(localCartEntities.map { localEventPriceEntity ->
+                        CartEntity(
+                            eventPriceId = localEventPriceEntity.id,
+                            quantity = localEventPriceEntity.quantityInCart,
+                            userId = user.id
+                        )
+                    })
+                    dao.clearCart()
                 }
             }
 
@@ -83,8 +72,8 @@ class RemoteEventRepository @Inject constructor(
                         event.toEvent(
                             isFavorite = favoriteEvents.containsKey(event.id),
                             quantityInCart = cartEvents[event.id]?.quantity ?: 0,
-                            pricesWithCategories = eventPrices.map {
-                                PriceWithCategory(it.id, it.priceType, it.price)
+                            pricesWithCategories = eventPrices.map { eventPriceEntity ->
+                                eventPriceEntity.toPriceWithCategory()
                             }
                         )
                     }
@@ -151,7 +140,7 @@ class RemoteEventRepository @Inject constructor(
                 .decodeList<RemoteEventEntity>()
                 .associateBy { it.id }
 
-            val eventCarts = cartItems.mapNotNull { cart ->
+            val eventsCart = cartItems.mapNotNull { cart ->
                 val eventPrice = eventPrices[cart.eventPriceId] ?: return@mapNotNull null
                 val event = events[eventPrice.eventId] ?: return@mapNotNull null
 
@@ -174,7 +163,7 @@ class RemoteEventRepository @Inject constructor(
                 )
             }
 
-            FetchResult.Success(eventCarts)
+            FetchResult.Success(eventsCart)
         } catch (e: Exception) {
             FetchResult.Error(null)
         }

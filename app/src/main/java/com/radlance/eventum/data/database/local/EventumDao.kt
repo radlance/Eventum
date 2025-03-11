@@ -5,8 +5,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.radlance.eventum.data.database.local.entity.LocalCategoryEntity
-import com.radlance.eventum.data.database.local.entity.LocalNotificationEntity
 import com.radlance.eventum.data.database.local.entity.LocalEventEntity
+import com.radlance.eventum.data.database.local.entity.LocalEventPriceEntity
+import com.radlance.eventum.data.database.local.entity.LocalNotificationEntity
 import com.radlance.eventum.data.database.local.entity.SearchHistoryQueryEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -35,25 +36,31 @@ interface EventumDao {
     @Query("SELECT * FROM category")
     suspend fun getCategories(): List<LocalCategoryEntity>
 
-    @Query("SELECT * FROM event")
-    suspend fun getEvents(): List<LocalEventEntity>
-
     @Query("UPDATE event SET is_favorite = NOT is_favorite WHERE id = :eventId")
     suspend fun changeFavoriteStatus(eventId: Int)
 
-    @Query("UPDATE event SET quantity_in_cart = 1 WHERE id = :eventId")
-    suspend fun addEventToCart(eventId: Int)
+    @Query("UPDATE event_price SET quantity_in_cart = quantity_in_cart + 1 WHERE id = :eventPriceId")
+    suspend fun addEventToCart(eventPriceId: Int)
 
-    @Query("SELECT * FROM event WHERE quantity_in_cart = 1")
-    suspend fun getCartEvents(): List<LocalEventEntity>
+    @Query("SELECT * FROM event")
+    suspend fun getEvents(): List<LocalEventEntity>
 
-    @Query("UPDATE event SET quantity_in_cart = :quantity WHERE id = :eventId")
-    suspend fun updateEventQuantity(eventId: Int, quantity: Int)
+    @Query("SELECT * FROM event_price WHERE quantity_in_cart != 0")
+    suspend fun getCartItems(): List<LocalEventPriceEntity>
 
-    @Query("DELETE FROM event WHERE id = :eventId")
-    suspend fun removeEventFromCart(eventId: Int)
+    @Query("SELECT * FROM event_price")
+    suspend fun getEventPrices(): List<LocalEventPriceEntity>
 
-    @Query("DELETE FROM event")
+    @Query("SELECT * FROM event_price WHERE event_id = :eventId")
+    suspend fun getEventPricesById(eventId: Int): List<LocalEventPriceEntity>
+
+    @Query("UPDATE event_price SET quantity_in_cart = :quantity WHERE id = :eventPriceId")
+    suspend fun updateEventQuantity(eventPriceId: Int, quantity: Int)
+
+    @Query("UPDATE event_price SET quantity_in_cart = 0 WHERE id = :eventPriceId")
+    suspend fun removeEventFromCart(eventPriceId: Int)
+
+    @Query("UPDATE event_price SET quantity_in_cart = 0")
     suspend fun clearCart()
 
     @Query("SELECT * FROM notification")

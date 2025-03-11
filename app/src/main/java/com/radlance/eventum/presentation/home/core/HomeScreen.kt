@@ -1,5 +1,6 @@
 package com.radlance.eventum.presentation.home.core
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -106,6 +107,7 @@ fun HomeScreen(
 
         loadContentResult.Show(
             onSuccess = { fetchContent ->
+                Log.d("HomeScreen", fetchContent.events.toString())
                 CategoriesRow(
                     categories = fetchContent.categories,
                     onCategoryClick = navigateToCatalog,
