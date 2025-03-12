@@ -52,7 +52,6 @@ import com.radlance.eventum.ui.vector.FavoriteOutlinedIcon
 import com.radlance.eventum.ui.vector.NotificationNavigationIcon
 import com.radlance.eventum.ui.vector.OrdersIcon
 import com.radlance.eventum.ui.vector.ProfileNavigationIcon
-import com.radlance.eventum.ui.vector.SettingsIcon
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -183,13 +182,6 @@ fun DrawerMenu(
                         onMenuItemClick()
                     },
                     showBadge = notificationExist
-                )
-
-                MenuItem(
-                    icon = SettingsIcon,
-                    contentDescription = "SettingsIcon",
-                    sectionResId = R.string.settings,
-                    onItemClick = { }
                 )
             }
 

@@ -71,7 +71,6 @@ fun HomeScreen(
         Spacer(Modifier.height(19.dp))
 
         HomeSearchBar(
-            onSettingsClick = {},
             hint = stringResource(R.string.search),
             onSearchFieldClick = onSearchFieldClick,
             modifier = Modifier.padding(horizontal = 20.dp)
