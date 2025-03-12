@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.eventum.R
@@ -39,11 +40,11 @@ import com.radlance.eventum.ui.theme.ralewayFamily
 
 @Composable
 fun OnboardingFirst(
+    innerPaddingBottom: Dp,
     onStartClicked: () -> Unit,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     BackHandler { onBackPressed() }
 
     Box(
@@ -154,7 +155,7 @@ fun OnboardingFirst(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp, bottom = 36.dp, top = 16.dp)
+                    .padding(start = 20.dp, end = 20.dp, bottom = 36.dp + innerPaddingBottom, top = 16.dp)
             )
         }
     }
@@ -163,11 +164,11 @@ fun OnboardingFirst(
 @Preview
 @Composable
 private fun OnboardingFirstPreview() {
-    OnboardingFirst({}, {})
+    OnboardingFirst(20.dp, {}, {})
 }
 
 @Preview(device = "spec:width=673dp,height=841dp")
 @Composable
 private fun OnboardingFirstPreviewExpanded() {
-    OnboardingFirst({}, {})
+    OnboardingFirst(20.dp, {}, {})
 }

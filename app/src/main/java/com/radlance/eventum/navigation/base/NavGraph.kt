@@ -3,6 +3,7 @@ package com.radlance.eventum.navigation.base
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -47,7 +48,8 @@ fun NavGraph(
     navController: NavHostController,
     navigationViewModel: NavigationViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
-    sharedViewModel: EventViewModel = viewModel()
+    sharedViewModel: EventViewModel = viewModel(),
+    paddingValues: PaddingValues = PaddingValues()
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -94,7 +96,8 @@ fun NavGraph(
                 },
                 onBackPressed = {
                     (context as Activity).finish()
-                }
+                },
+                innerPaddingBottom = paddingValues.calculateBottomPadding()
             )
         }
 
@@ -107,7 +110,8 @@ fun NavGraph(
                     navController.navigate(OnboardingFirst) {
                         popUpTo<OnboardingSecond> { inclusive = true }
                     }
-                }
+                },
+                innerPaddingBottom = paddingValues.calculateBottomPadding()
             )
         }
 
@@ -123,7 +127,8 @@ fun NavGraph(
                     navController.navigate(OnboardingSecond) {
                         popUpTo<OnboardingThird> { inclusive = true }
                     }
-                }
+                },
+                innerPaddingBottom = paddingValues.calculateBottomPadding()
             )
         }
 
@@ -213,6 +218,7 @@ fun NavGraph(
 
         composable<Home> {
             MainScreen(
+                paddingValue = paddingValues,
                 onSignOut = navigateToSignIn,
                 navigateToCart = { navController.navigate(Cart) },
                 navigateToProfile = { navController.navigate(Profile) },

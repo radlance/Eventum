@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,6 +53,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     drawerStateViewModel: DrawerStateViewModel = hiltViewModel(),
     sharedEventViewModel: EventViewModel = hiltViewModel(),
+    paddingValue: PaddingValues = PaddingValues()
 ) {
     val navigationState = rememberNavigationState()
     var userData by remember { mutableStateOf(User()) }
@@ -101,6 +103,7 @@ fun MainScreen(
         onLoading = {},
         onUnauthorized = {}
     )
+    val bottomInnerPadding = paddingValue.calculateBottomPadding()
     Box(
         Modifier
             .fillMaxSize()
@@ -137,7 +140,8 @@ fun MainScreen(
             containerColor = MaterialTheme.colorScheme.surfaceTint,
             bottomBar = {
                 BottomNavigationBar(
-                    navigationState,
+                    bottomInnerPadding = bottomInnerPadding,
+                    navigationState = navigationState,
                     navigateToCart = navigateToCart,
                     navigateToProfile = navigateToProfile,
                     navigateToNotification = navigateToNotification
