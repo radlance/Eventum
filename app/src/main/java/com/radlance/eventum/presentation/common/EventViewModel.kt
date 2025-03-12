@@ -264,7 +264,7 @@ class EventViewModel @Inject constructor(
             events.map {
                 with(it) {
                     HistoryEvent(
-                        id = id,
+                        eventPriceId = id,
                         title = event.title,
                         price = 0.0,
                         imageUrl = event.imageUrl,

@@ -91,7 +91,6 @@ fun CartScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
                 .background(MaterialTheme.colorScheme.surface),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -160,17 +159,16 @@ fun CartScreen(
 
                             onRemoveEvent = eventViewModel::removeEventFromCart,
 
-                            modifier = Modifier.weight(4.7f)
+                            modifier = Modifier.weight(1f)
                         )
-                        Box(
-                            modifier = Modifier.weight(2f)
-                        ) {
+                        Box {
                             CartResult(
                                 eventsPrice = eventsInCart.sumOf { it.price * it.quantity },
                                 buttonStringResId = R.string.place_order,
                                 onButtonClick = {
                                     observeUserData = true
-                                }
+                                },
+                                innerBottomPadding = paddingValues.calculateBottomPadding()
                             )
                         }
                     }

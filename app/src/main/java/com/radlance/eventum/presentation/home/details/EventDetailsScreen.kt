@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.eventum.R
@@ -35,7 +36,8 @@ fun EventDetailsScreen(
     onBackPressed: () -> Unit,
     onNavigateToCart: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EventViewModel = hiltViewModel()
+    viewModel: EventViewModel = hiltViewModel(),
+    bottomPadding: Dp
 ) {
     val scrollState = rememberScrollState()
     val catalogContent by viewModel.catalogContent.collectAsState()
@@ -64,7 +66,7 @@ fun EventDetailsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(scrollState)
-            .padding(horizontal = 20.dp),
+            .padding(start = 20.dp, end = 20.dp, bottom = bottomPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         catalogContent.Show(
@@ -173,6 +175,11 @@ fun EventDetailsScreen(
 @Composable
 private fun EventDetailsScreenPreview() {
     EventumTheme {
-        EventDetailsScreen(selectedEventId = 1, onBackPressed = {}, onNavigateToCart = {})
+        EventDetailsScreen(
+            selectedEventId = 1,
+            onBackPressed = {},
+            onNavigateToCart = {},
+            bottomPadding = 0.dp
+        )
     }
 }

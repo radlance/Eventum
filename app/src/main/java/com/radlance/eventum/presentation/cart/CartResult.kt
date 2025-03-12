@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,6 +40,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun CartResult(
+    innerBottomPadding: Dp,
     eventsPrice: Double,
     @StringRes buttonStringResId: Int,
     onButtonClick: () -> Unit,
@@ -51,7 +51,11 @@ fun CartResult(
     Box(
         modifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(horizontal = 20.dp)) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .padding(horizontal = 20.dp)
+        ) {
             Spacer(Modifier.height(34.dp))
             ResultSection(titleResId = R.string.sum, price = eventsPrice)
             Spacer(Modifier.height(8.dp))
@@ -93,9 +97,11 @@ fun CartResult(
                 buttonStringResId,
                 onClick = onButtonClick,
                 enabled = buttonEnabled,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding()
             )
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(20.dp + innerBottomPadding))
         }
     }
 }
@@ -156,6 +162,11 @@ private fun ResultSection(
 @Composable
 private fun CartResultPreview() {
     EventumTheme {
-        CartResult(eventsPrice = 753.95, onButtonClick = {}, buttonStringResId = R.string.place_order)
+        CartResult(
+            eventsPrice = 753.95,
+            onButtonClick = {},
+            buttonStringResId = R.string.place_order,
+            innerBottomPadding = 0.dp
+        )
     }
 }

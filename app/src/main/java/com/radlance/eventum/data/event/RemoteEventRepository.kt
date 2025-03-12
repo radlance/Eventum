@@ -285,11 +285,12 @@ class RemoteEventRepository @Inject constructor(
                 val event = events[eventPrice.eventId] ?: return@mapNotNull null
 
                 HistoryEvent(
-                    id = history.eventPriceId,
+                    eventPriceId = history.eventPriceId,
                     price = eventPrice.price * history.quantity,
                     title = event.title,
                     imageUrl = event.imageUrl,
                     priceType = eventPrice.priceType,
+                    id = history.id,
                     orderTime = LocalDateTime.now().toKotlinLocalDateTime()
                 )
             }

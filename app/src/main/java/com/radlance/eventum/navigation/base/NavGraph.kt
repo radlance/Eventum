@@ -31,12 +31,12 @@ import com.radlance.eventum.presentation.home.catalog.CatalogScreen
 import com.radlance.eventum.presentation.home.details.EventDetailsScreen
 import com.radlance.eventum.presentation.home.popular.PopularScreen
 import com.radlance.eventum.presentation.home.search.SearchScreen
+import com.radlance.eventum.presentation.map.MapScreen
 import com.radlance.eventum.presentation.notification.NotificationScreen
 import com.radlance.eventum.presentation.onboarding.OnboardingFirst
 import com.radlance.eventum.presentation.onboarding.OnboardingSecond
 import com.radlance.eventum.presentation.onboarding.OnboardingThird
 import com.radlance.eventum.presentation.onboarding.SplashScreen
-import com.radlance.eventum.presentation.map.MapScreen
 import com.radlance.eventum.presentation.order.OrderScreen
 import com.radlance.eventum.presentation.profile.FullScreenBarcode
 import com.radlance.eventum.presentation.profile.ProfileScreen
@@ -74,6 +74,7 @@ fun NavGraph(
         }
     }
 
+    val bottomPadding = paddingValues.calculateBottomPadding()
     NavHost(
         navController = navController,
         startDestination = Splash,
@@ -97,7 +98,7 @@ fun NavGraph(
                 onBackPressed = {
                     (context as Activity).finish()
                 },
-                innerPaddingBottom = paddingValues.calculateBottomPadding()
+                innerPaddingBottom = bottomPadding
             )
         }
 
@@ -111,7 +112,7 @@ fun NavGraph(
                         popUpTo<OnboardingSecond> { inclusive = true }
                     }
                 },
-                innerPaddingBottom = paddingValues.calculateBottomPadding()
+                innerPaddingBottom = bottomPadding
             )
         }
 
@@ -128,7 +129,7 @@ fun NavGraph(
                         popUpTo<OnboardingThird> { inclusive = true }
                     }
                 },
-                innerPaddingBottom = paddingValues.calculateBottomPadding()
+                innerPaddingBottom = bottomPadding
             )
         }
 
@@ -265,7 +266,8 @@ fun NavGraph(
                 selectedEventId = args.eventId,
                 onBackPressed = navController::navigateUp,
                 onNavigateToCart = { navController.navigate(Cart) },
-                viewModel = sharedViewModel
+                viewModel = sharedViewModel,
+                bottomPadding = bottomPadding
             )
         }
 

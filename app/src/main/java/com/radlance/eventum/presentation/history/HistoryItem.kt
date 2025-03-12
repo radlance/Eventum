@@ -133,7 +133,7 @@ private fun HistoryItemPreview() {
     EventumTheme {
         HistoryItem(
             historyEvent = HistoryEvent(
-                id = 1,
+                eventPriceId = 1,
                 title = "mock",
                 price = 100.0,
                 imageUrl = "https://",

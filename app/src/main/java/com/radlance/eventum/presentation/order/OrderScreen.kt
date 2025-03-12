@@ -91,7 +91,6 @@ fun OrderScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
                 .background(MaterialTheme.colorScheme.surface),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -102,18 +101,14 @@ fun OrderScreen(
 
             cartContent.Show(
                 onSuccess = { cartList ->
-
-                    Column(modifier = Modifier.weight(4.5f)) {
+                    Column(modifier = Modifier.weight(1f)) {
                         OrderCard(
                             email = currentUser.email,
                             onMapClick = onMapClick,
                             modifier = Modifier.padding(horizontal = 14.dp)
                         )
                     }
-
-                    Box(
-                        modifier = Modifier.weight(2f)
-                    ) {
+                    Box {
                         if (resultSum == 0.0) {
                             resultSum = cartList.sumOf { it.price * it.quantity }
                         }
@@ -122,7 +117,8 @@ fun OrderScreen(
                             eventsPrice = resultSum,
                             buttonStringResId = R.string.confirm,
                             buttonEnabled = placeOrderButtonEnabled,
-                            onButtonClick = { eventViewModel.placeOrder(cartList) }
+                            onButtonClick = { eventViewModel.placeOrder(cartList) },
+                            innerBottomPadding = paddingValues.calculateBottomPadding()
                         )
                     }
                 },

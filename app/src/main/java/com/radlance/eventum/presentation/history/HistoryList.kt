@@ -91,6 +91,7 @@ private fun HistoryListPreview() {
             List(20) {
                 HistoryEvent(
                     id = it,
+                    eventPriceId = it,
                     title = "mock$it",
                     price = 100.0 * it,
                     imageUrl = "https://",
