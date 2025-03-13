@@ -1,7 +1,5 @@
 package com.radlance.eventum.presentation.profile.edit
 
-import android.content.Context
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,12 +27,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radlance.eventum.R
 import com.radlance.eventum.presentation.authorization.common.AuthScaffold
 import com.radlance.eventum.presentation.profile.ProfileViewModel
 import com.radlance.eventum.ui.theme.EventumTheme
-import androidx.core.net.toUri
+
 
 @Composable
 fun EditProfileScreen(
@@ -53,7 +52,7 @@ fun EditProfileScreen(
 
     var nameFieldValue by rememberSaveable { mutableStateOf("") }
     var emailFieldValue by rememberSaveable { mutableStateOf("") }
-    var imageState by rememberSaveable { mutableStateOf<Uri>(Uri.EMPTY) }
+    var imageState by remember { mutableStateOf<ImageState>(ImageState.Base) }
 
     val updateUserResult by viewModel.updateUserResult.collectAsState()
 
@@ -102,8 +101,9 @@ fun EditProfileScreen(
             EditProfileHeader(onBackPressed = onBackPressed)
             Spacer(Modifier.height(37.dp))
             EditProfileImage(
-                currentImageUri = imageState,
-                onImageChanged = { imageState = it }
+                currentImage = imageState.image(),
+                onContentImageChanged = { imageState = ImageState.UriImage(it) },
+                onPreviewImageChanged = { imageState = ImageState.BitmapImage(it) }
             )
             Spacer(Modifier.height(22.dp))
 
@@ -111,7 +111,7 @@ fun EditProfileScreen(
                 onSuccess = { userData ->
                     LaunchedEffect(userData.imageUrl) {
                         if (userData.imageUrl.isNotEmpty()) {
-                            imageState = userData.imageUrl.toUri()
+                            imageState = ImageState.UriImage(userData.imageUrl.toUri())
                         }
                     }
 
@@ -138,8 +138,8 @@ fun EditProfileScreen(
 
                         profileUiState = profileUiState,
                         onSaveClick = {
-                            val byteArray = if (imageState != userData.imageUrl.toUri()) {
-                                imageState.toByteArray(context)
+                            val byteArray = if (imageState.image() != userData.imageUrl.toUri()) {
+                                imageState.byteArray(context)
                             } else {
                                 null
                             }
@@ -161,10 +161,6 @@ fun EditProfileScreen(
             Spacer(Modifier.height(140.dp))
         }
     }
-}
-
-private fun Uri.toByteArray(context: Context): ByteArray? {
-    return context.contentResolver.openInputStream(this)?.use { it.buffered().readBytes() }
 }
 
 @Preview

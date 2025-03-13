@@ -1,8 +1,10 @@
 package com.radlance.eventum.presentation.profile.edit
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,18 +29,24 @@ import com.radlance.eventum.ui.theme.EventumTheme
 
 @Composable
 fun EditProfileImage(
-    currentImageUri: Uri,
-    onImageChanged: (Uri) -> Unit,
+    currentImage: Any,
+    onContentImageChanged: (Uri) -> Unit,
+    onPreviewImageChanged: (Bitmap) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
 
-    val resultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            uri?.let { onImageChanged(it) }
-        }
-    )
+    val previewLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview()
+    ) { bitmap ->
+        bitmap?.let { onPreviewImageChanged(it) }
+    }
+
+    val contentLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let { onContentImageChanged(it) }
+    }
 
     Box(
         modifier = modifier
@@ -46,7 +54,7 @@ fun EditProfileImage(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(currentImageUri)
+                .data(currentImage)
                 .crossfade(true)
                 .build(),
 
@@ -54,7 +62,7 @@ fun EditProfileImage(
             modifier = Modifier
                 .size(96.dp)
                 .clip(CircleShape)
-                .clickable { resultLauncher.launch("image/*") },
+                .clickable { previewLauncher.launch() },
             contentScale = ContentScale.Crop
         )
 
@@ -64,7 +72,7 @@ fun EditProfileImage(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = (-10).dp, y = (-2).dp)
-                .clickable { resultLauncher.launch("image/*") }
+                .clickable { contentLauncher.launch("image/*") }
         )
     }
 }
@@ -73,6 +81,10 @@ fun EditProfileImage(
 @Composable
 private fun EditProfileImagePreview() {
     EventumTheme {
-        EditProfileImage(onImageChanged = {}, currentImageUri = Uri.EMPTY)
+        EditProfileImage(
+            onContentImageChanged = {},
+            currentImage = Uri.EMPTY,
+            onPreviewImageChanged = {}
+        )
     }
 }
