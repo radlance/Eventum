@@ -30,6 +30,9 @@
     <string name="send_again">Отправить заново</string>
     <string name="sended">Отправлено</string>
     <string name="enter_the_quote">Введите фразу, на основе которой будет сгенерирован пароль</string>
+    <string name="pick_image">Выбрать изображение</string>
+    <string name="camera">Камера</string>
+    <string name="gallery">Галерея</string>
     <string name="generate_password">Сгенерировать</string>
     <string name="copy">Скопировать</string>
     <string name="save">Сохранить</string>

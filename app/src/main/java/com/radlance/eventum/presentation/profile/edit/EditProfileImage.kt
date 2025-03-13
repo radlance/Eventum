@@ -9,9 +9,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,6 +26,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -34,7 +41,7 @@ fun EditProfileImage(
     onPreviewImageChanged: (Bitmap) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
+    var showPickImageTypeDialog by remember { mutableStateOf(false) }
 
     val previewLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
@@ -46,6 +53,25 @@ fun EditProfileImage(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let { onContentImageChanged(it) }
+    }
+
+    if (showPickImageTypeDialog) {
+        Dialog(
+            onDismissRequest = { showPickImageTypeDialog = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            PickImageTypeDialog(
+                onPhotoButtonClick = {
+                    previewLauncher.launch()
+                    showPickImageTypeDialog = false
+                },
+                onGalleryButtonClick = {
+                    contentLauncher.launch("image/*")
+                    showPickImageTypeDialog = false
+                },
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+        }
     }
 
     Box(
@@ -62,7 +88,7 @@ fun EditProfileImage(
             modifier = Modifier
                 .size(96.dp)
                 .clip(CircleShape)
-                .clickable { previewLauncher.launch() },
+                .clickable { showPickImageTypeDialog = true },
             contentScale = ContentScale.Crop
         )
 
@@ -72,7 +98,7 @@ fun EditProfileImage(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = (-10).dp, y = (-2).dp)
-                .clickable { contentLauncher.launch("image/*") }
+                .clickable { showPickImageTypeDialog = true }
         )
     }
 }

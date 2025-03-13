@@ -31,6 +31,9 @@
     <string name="send_again">Send Again</string>
     <string name="sended">Sent</string>
     <string name="enter_the_quote">Enter a phrase to generate a password</string>
+    <string name="pick_image">Pick an image</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
     <string name="generate_password">Generate</string>
     <string name="copy">Copy</string>
     <string name="save">Save</string>
