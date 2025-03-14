@@ -76,7 +76,7 @@
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
     <string name="my_cart">My Cart</string>
-    <string name="edit_profile">Edit Profile</string>
+    <string name="edit_profile">Edit profile image</string>
     <string name="open">Open</string>
     <string name="name">Name</string>
     <string name="last_name">Last Name</string>
@@ -111,4 +111,5 @@
     <string name="getting_current_position">Getting current location…</string>
     <string name="geocoding_error">Geocoding error</string>
     <string name="loft_project">Saint Petersburg, Loft Project "Etazhi"</string>
+    <string name="change_profile_sucess">Profile data successfully changed</string>
 </resources>

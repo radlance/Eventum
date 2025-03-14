@@ -58,7 +58,7 @@ data class AuthViewModel @Inject constructor(
                             User(
                                 email = email!!,
                                 password = password!!,
-                                name = name!!
+                                firstName = name!!
                             )
                         )
 

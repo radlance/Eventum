@@ -52,7 +52,13 @@ abstract class RemoteMapper {
     }
 
     protected fun UserEntity.toUser(): User {
-        return User(name = name, imageUrl = imageUrl)
+        return User(
+            firstName = name,
+            imageUrl = imageUrl,
+            phoneNumber = phoneNumber,
+            address = address,
+            lastName = lastName
+        )
     }
 
     protected fun NotificationEntity.toNotification(): Notification {

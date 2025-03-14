@@ -53,9 +53,13 @@ class UserRepositoryImpl @Inject constructor(
 
                 supabaseClient.auth.updateUser {
                     data {
-                        put("name", user.name)
+                        put("name", user.firstName)
+                        put("last_name", user.lastName)
+                        put("address", user.address)
+                        put("phone_number", user.phoneNumber)
                     }
                 }
+
                 FetchResult.Success(Unit)
             } else {
                 FetchResult.Error(Unit)

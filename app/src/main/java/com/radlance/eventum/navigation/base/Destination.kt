@@ -102,7 +102,3 @@ data object UserData : BottomDestination
 @Serializable
 @Keep
 data object Barcode : BottomDestination
-
-@Serializable
-@Keep
-data object EditProfile : BottomDestination

@@ -40,7 +40,6 @@ import com.radlance.eventum.presentation.onboarding.SplashScreen
 import com.radlance.eventum.presentation.order.OrderScreen
 import com.radlance.eventum.presentation.profile.FullScreenBarcode
 import com.radlance.eventum.presentation.profile.ProfileScreen
-import com.radlance.eventum.presentation.profile.edit.EditProfileScreen
 import com.radlance.eventum.ui.theme.backgroundGradient
 
 @Composable
@@ -309,7 +308,6 @@ fun NavGraph(
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     ProfileScreen(
                         onBarcodeClick = { navController.navigate(Barcode) },
-                        onEditProfileClick = { navController.navigate(EditProfile) },
                         onSignInClick = navigateToSignIn,
                         onBackPressed = { navController.navigate(Home) }
                     )
@@ -323,13 +321,6 @@ fun NavGraph(
                             popUpTo<Barcode> { inclusive = true }
                         }
                     }
-                )
-            }
-
-            composable<EditProfile> {
-                EditProfileScreen(
-                    onBackPressed = { navController.navigate(UserData) },
-                    onNavigateToProfile = { navController.navigate(UserData) }
                 )
             }
         }

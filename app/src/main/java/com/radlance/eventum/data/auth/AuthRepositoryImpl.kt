@@ -22,14 +22,19 @@ class AuthRepositoryImpl @Inject constructor(
                 email = user.email
                 password = user.password
                 data = buildJsonObject {
-                    put("name", user.name)
+                    put("name", user.firstName)
                     put(
                         "avatar_url",
                         "https://zwhuwripdbtivgxewlsc.supabase.co/storage/v1/object/public/Eventum/default_profile_image.jpg"
                     )
+                    put("last_name", "")
+                    put("address", "")
+                    put("phone_number", "")
                 }
             }
-            signIn(user)
+
+            AuthResult.Success
+
         } catch (e: AuthRestException) {
             AuthResult.Error(statusCode = 422)
         } catch (e: Exception) {

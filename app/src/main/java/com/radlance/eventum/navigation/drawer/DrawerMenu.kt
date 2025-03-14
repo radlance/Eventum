@@ -121,7 +121,7 @@ fun DrawerMenu(
 
             Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = user.name,
+                text = user.firstName,
                 fontSize = 20.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.Bold,
@@ -206,7 +206,7 @@ fun DrawerMenu(
 private fun DrawerMenuPreview() {
     EventumTheme {
         DrawerMenu(
-            user = User(name = "stub"),
+            user = User(firstName = "stub"),
             navigationState = rememberNavigationState(),
             onMenuItemClick = {},
             onSignOutClick = {},

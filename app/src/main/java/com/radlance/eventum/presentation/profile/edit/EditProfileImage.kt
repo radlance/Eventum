@@ -5,24 +5,15 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,9 +30,10 @@ fun EditProfileImage(
     currentImage: Any,
     onContentImageChanged: (Uri) -> Unit,
     onPreviewImageChanged: (Bitmap) -> Unit,
+    showPickImageTypeDialog: Boolean,
+    onCloseDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showPickImageTypeDialog by remember { mutableStateOf(false) }
 
     val previewLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
@@ -57,17 +49,17 @@ fun EditProfileImage(
 
     if (showPickImageTypeDialog) {
         Dialog(
-            onDismissRequest = { showPickImageTypeDialog = false },
+            onDismissRequest = onCloseDialog,
             properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             PickImageTypeDialog(
                 onPhotoButtonClick = {
                     previewLauncher.launch()
-                    showPickImageTypeDialog = false
+                    onCloseDialog()
                 },
                 onGalleryButtonClick = {
                     contentLauncher.launch("image/*")
-                    showPickImageTypeDialog = false
+                    onCloseDialog()
                 },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
@@ -87,18 +79,8 @@ fun EditProfileImage(
             contentDescription = stringResource(R.string.profile_image),
             modifier = Modifier
                 .size(96.dp)
-                .clip(CircleShape)
-                .clickable { showPickImageTypeDialog = true },
+                .clip(CircleShape),
             contentScale = ContentScale.Crop
-        )
-
-        Image(
-            painter = painterResource(R.drawable.ic_edit_profile_image),
-            contentDescription = "ic_edit_profile_image",
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(x = (-10).dp, y = (-2).dp)
-                .clickable { showPickImageTypeDialog = true }
         )
     }
 }
@@ -110,7 +92,9 @@ private fun EditProfileImagePreview() {
         EditProfileImage(
             onContentImageChanged = {},
             currentImage = Uri.EMPTY,
-            onPreviewImageChanged = {}
+            onPreviewImageChanged = {},
+            onCloseDialog = {},
+            showPickImageTypeDialog = true
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.radlance.eventum.presentation.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +21,7 @@ import com.radlance.eventum.ui.theme.ralewayFamily
 @Composable
 fun ProfileHeader(
     onBackPressed : () -> Unit,
+    onDoneClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     CommonHeader(
@@ -45,7 +47,8 @@ fun ProfileHeader(
                 fontSize = 16.sp,
                 fontFamily = ralewayFamily,
                 fontWeight = FontWeight.Bold,
-                lineHeight = 16.sp
+                lineHeight = 16.sp,
+                modifier = Modifier.clickable { onDoneClick() }
             )
         },
 
@@ -59,6 +62,6 @@ fun ProfileHeader(
 @Composable
 private fun ProfileHeaderPreview() {
     EventumTheme {
-        ProfileHeader({})
+        ProfileHeader({}, {})
     }
 }
