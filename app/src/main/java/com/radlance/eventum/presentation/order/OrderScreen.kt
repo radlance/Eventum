@@ -103,7 +103,7 @@ fun OrderScreen(
                 onSuccess = { cartList ->
                     Column(modifier = Modifier.weight(1f)) {
                         OrderCard(
-                            email = currentUser.email,
+                            user = currentUser,
                             onMapClick = onMapClick,
                             modifier = Modifier.padding(horizontal = 14.dp)
                         )

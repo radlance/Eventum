@@ -22,12 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.eventum.R
+import com.radlance.eventum.domain.user.User
 import com.radlance.eventum.ui.theme.EventumTheme
 import com.radlance.eventum.ui.theme.ralewayFamily
 
 @Composable
 fun OrderCard(
-    email: String,
+    user: User,
     onMapClick: (lat: Double, long: Double) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -45,7 +46,7 @@ fun OrderCard(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             ContactIInformation(
-                email = email,
+                user = user,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
 
@@ -82,7 +83,7 @@ fun OrderCard(
 private fun OrderCardPreview() {
     EventumTheme {
         OrderCard(
-            email = "emmanueloyiboke@gmail.com",
+            user = User(),
             onMapClick = { _, _ -> },
             modifier = Modifier
                 .height(425.dp)
@@ -96,7 +97,7 @@ private fun OrderCardPreview() {
 private fun OrderCardExpandedPreview() {
     EventumTheme {
         OrderCard(
-            email = "emmanueloyiboke@gmail.com",
+            user = User(),
             onMapClick = { _, _ -> },
             modifier = Modifier
                 .height(425.dp)

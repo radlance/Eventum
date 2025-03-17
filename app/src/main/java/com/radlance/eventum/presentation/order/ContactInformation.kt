@@ -1,7 +1,6 @@
 package com.radlance.eventum.presentation.order
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radlance.eventum.R
+import com.radlance.eventum.domain.user.User
 import com.radlance.eventum.ui.theme.EventumTheme
 import com.radlance.eventum.ui.theme.inputFieldTextColor
 import com.radlance.eventum.ui.theme.poppinsFamily
@@ -33,7 +33,7 @@ import com.radlance.eventum.ui.theme.ralewayFamily
 
 @Composable
 fun ContactIInformation(
-    email: String,
+    user: User,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -50,7 +50,7 @@ fun ContactIInformation(
         ContactSection(
             iconResId = R.drawable.ic_mail,
             contentDescription = "ic_mail",
-            contactData = email,
+            contactData = user.email,
             title = stringResource(R.string.email),
         )
 
@@ -59,7 +59,7 @@ fun ContactIInformation(
         ContactSection(
             iconResId = R.drawable.ic_phone,
             contentDescription = "ic_phone",
-            contactData = "+234-811-732-5298",
+            contactData = user.phoneNumber,
             title = stringResource(R.string.phone),
         )
     }
@@ -106,11 +106,6 @@ private fun ContactSection(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-
-        Image(
-            painter = painterResource(R.drawable.ic_edit),
-            contentDescription = "ic_edit"
-        )
     }
 }
 
@@ -131,6 +126,6 @@ private fun ContactSSectionPreview() {
 @Composable
 private fun ContactInformationPreview() {
     EventumTheme {
-        ContactIInformation(email = "emmanueloyiboke@gmail.com")
+        ContactIInformation(user = User())
     }
 }
